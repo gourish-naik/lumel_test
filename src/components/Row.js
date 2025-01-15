@@ -3,12 +3,14 @@ import React, { useEffect, useState } from "react";
 const Row = ({ row, updateValue }) => {
     const [inputValue, setInputValue] = useState("");
     const [variance, setVariance] = useState(0);
+    const [oldData,setOldData] = useState(null);
 
     const calculatedValue = row.children
         ? row.children.reduce((sum, child) => sum + child.value, 0)
         : row.value;
 
     const handleAllocationPercentage = () => {
+        setOldData(row.value)
         const percentage = parseFloat(inputValue);
         if (!isNaN(percentage)) {
             const newValue = row.value * (1 + percentage / 100);
@@ -17,6 +19,7 @@ const Row = ({ row, updateValue }) => {
     };
 
     const handleAllocationValue = () => {
+        setOldData(row.value)
         const value = parseFloat(inputValue);
         if (!isNaN(value)) {
             updateValue(row.id, value);
@@ -24,12 +27,13 @@ const Row = ({ row, updateValue }) => {
     };
 
     useEffect(() => {
+        let calculated = oldData ? oldData : row.value;
         const updateVariance = (currentRow) => {
             const newCalculatedValue = currentRow.children
                 ? currentRow.children.reduce((sum, child) => sum + child.value, 0)
                 : currentRow.value;
             const newVariance = currentRow.value
-                ? ((newCalculatedValue - currentRow.value) / currentRow.value) * 100
+                ? ((newCalculatedValue - calculated) / calculated) * 100
                 : 0;
             setVariance(newVariance);
         };
