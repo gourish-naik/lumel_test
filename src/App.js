@@ -6,7 +6,7 @@ const App = () => {
     {
       id: "electronics",
       label: "Electronics",
-      value: 1400,
+      value: 1500,
       children: [
         { id: "phones", label: "Phones", value: 800 },
         { id: "laptops", label: "Laptops", value: 700 },
